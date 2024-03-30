@@ -1,54 +1,52 @@
 import puppeteer from "puppeteer";
-import Mailjs from "@cemalgnlts/mailjs";
 import axios from "axios";
-const mailjs = new Mailjs();
-async function CreateEmail() {
-  //   return await mailjs
-  //     .createOneAccount()
-  //     .then((account) => account.data.username);
-  const options = {
-    method: "POST",
-    url: "https://temp-mail44.p.rapidapi.com/api/v3/email/new",
-    headers: {
-      "content-type": "application/json",
-      "X-RapidAPI-Key": "34f4a9fcc3mshaebe5fdaeee1e54p1c222bjsnb118f4c09557",
-      "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com",
-    },
-    data: {
-      key1: "value",
-      key2: "value",
-    },
-  };
+import "dotenv/config";
 
-  try {
-    const response = await axios.request(options);
-    return response.data.email;
-  } catch (error) {
-    console.error(error);
-  }
-}
-async function getInbox(email) {
-  //   return await mailjs.getMessages().then((i) => i);
+async function CreateEmail() {
   const options = {
     method: "GET",
-    url: `https://temp-mail44.p.rapidapi.com/api/v3/email/${email}/messages`,
+    url: "https://temp-mail94.p.rapidapi.com/new-mail",
     headers: {
-      "X-RapidAPI-Key": "34f4a9fcc3mshaebe5fdaeee1e54p1c222bjsnb118f4c09557",
-      "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com",
+      "X-RapidAPI-Key": process.env.API_KEY,
+      "X-RapidAPI-Host": "temp-mail94.p.rapidapi.com",
     },
   };
 
   try {
     const response = await axios.request(options);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
   }
 }
-
+async function getInbox(data) {
+  let pengulang = 0;
+  while (pengulang < 5) {
+    const options = {
+      method: "GET",
+      url: "https://temp-mail94.p.rapidapi.com/mail-box",
+      params: {
+        email: data.email,
+        token: data.token,
+      },
+      headers: {
+        "X-RapidAPI-Key": process.env.API_KEY,
+        "X-RapidAPI-Host": "temp-mail94.p.rapidapi.com",
+      },
+    };
+    try {
+      const response = await axios.request(options);
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 async function Mulai(index) {
   const emailNya = await CreateEmail();
-//   console.log(`Mendapatkan email`, emailNya);
+  // console.log(`Mendapatkan email`, emailNya.email);
 
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
@@ -57,14 +55,14 @@ async function Mulai(index) {
   );
   await page.setViewport({ width: 1080, height: 1024 });
 
-  await page.goto("https://referral.ordify.world?r=INNMJASY", {
+  await page.goto(process.env.LINK_REF, {
     waitUntil: "networkidle0",
   });
 
   const email = `[name="email"]`;
   await page.waitForSelector(email);
   if (email) {
-    await page.type(email, emailNya);
+    await page.type(email, emailNya.email);
   }
   const buttonSend =
     "body > main > section > form.flex.w-full.flex-col.justify-center.gap-2.text-foreground > button";
@@ -80,7 +78,7 @@ async function Mulai(index) {
     await delay(3000);
     while (percobaan < 5) {
       let inbox = await getInbox(emailNya);
-      //   console.log(`isi inbox`, inbox);
+      // console.log(`isi inbox`, inbox);
       if (inbox.length === 0) {
         percobaan++;
         console.log("Menunggu kembali Belum ada email...", percobaan);
@@ -102,15 +100,15 @@ async function Mulai(index) {
   });
   await delay(3000);
   await browser.close();
-  console.log(`[${index}] ${emailNya} ✅`);
+  console.log(`[${index}] ${emailNya.email} ✅`);
 }
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function start() {
-  for (let index = 0; index < 80; index++) {
-    await Mulai(index+1);
+  for (let index = 0; index < process.env.JMLH_REF; index++) {
+    await Mulai(index + 1);
   }
   console.log("Kelar BossQ 👌");
 }

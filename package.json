@@ -12,6 +12,7 @@
   "dependencies": {
     "@cemalgnlts/mailjs": "^3.0.1",
     "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
     "puppeteer": "^22.5.0"
   }
 }
