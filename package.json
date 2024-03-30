@@ -1,0 +1,17 @@
+{
+  "name": "ordify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cemalgnlts/mailjs": "^3.0.1",
+    "axios": "^1.6.8",
+    "puppeteer": "^22.5.0"
+  }
+}

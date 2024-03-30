@@ -1,0 +1,50 @@
+{
+  "name": "@cemalgnlts/mailjs",
+  "version": "3.0.1",
+  "description": "A JavaScript wrapper around the [mail.tm](https://docs.mail.tm/) api.",
+  "type": "module",
+  "source": "src/index.ts",
+  "main": "dist/mailjs.cjs",
+  "module": "dist/mailjs.mjs",
+  "browser": "dist/mailjs.min.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/mailjs.mjs",
+      "require": "./dist/mailjs.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "rollup --config",
+    "postbuild": "node tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cemalgnlts/Mailjs.git"
+  },
+  "keywords": [
+    "mail",
+    "temp-mail"
+  ],
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "author": "Cemal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cemalgnlts/Mailjs/issues"
+  },
+  "homepage": "https://github.com/cemalgnlts/Mailjs#readme",
+  "dependencies": {
+    "eventsource": "^2.0.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "rollup": "^4.1.4",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2"
+  }
+}
